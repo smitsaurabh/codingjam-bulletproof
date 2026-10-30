@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Tailor — Ruthless Focus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="brand">
+        <span class="brand-icon">⚡</span>
+        <h1 class="brand-title">Resume Tailor</h1>
+        <span class="brand-tag">Ruthless Focus</span>
+      </div>
+      <div class="header-actions">
+        <button id="sample-btn" type="button" class="btn btn-ghost" title="Fill sample resume bullets & job posting">
+          ✨ Try Sample
+        </button>
+        <button id="clear-btn" type="button" class="btn btn-ghost btn-danger-ghost" title="Clear all inputs">
+          Clear
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Studio Split Workspace -->
+    <main class="workbench-grid">
+      <!-- Left Column: Input Workbench -->
+      <section class="pane input-pane" aria-label="Input Workbench">
+        <form id="tailor-form" novalidate>
+          <!-- Input 1: Resume Text -->
+          <div class="input-group">
+            <div class="input-header">
+              <label for="resume-input" class="input-label">
+                1. Your Resume Experience Bullets
+              </label>
+              <span id="resume-counter" class="char-counter">0 chars</span>
+            </div>
+            <textarea
+              id="resume-input"
+              name="resume_text"
+              class="text-input"
+              rows="7"
+              placeholder="Paste 3–8 bullet points from your existing resume. For example:&#10;• Built backend notifications microservice using Go and Kafka.&#10;• Led cloud migration from on-prem to AWS, cutting query latency.&#10;• Collaborated with product team on roadmap and sprint ceremonies."
+              required
+            ></textarea>
+          </div>
+
+          <!-- Input 2: Job Description Text -->
+          <div class="input-group">
+            <div class="input-header">
+              <label for="job-input" class="input-label">
+                2. Target Job Description & Requirements
+              </label>
+              <span id="job-counter" class="char-counter">0 chars</span>
+            </div>
+            <textarea
+              id="job-input"
+              name="job_description"
+              class="text-input"
+              rows="7"
+              placeholder="Paste the job requirements, responsibilities, or role description from LinkedIn / Greenhouse. For example:&#10;Seeking a Senior Staff Systems Engineer to design high-throughput distributed architectures, mentor engineers, and optimize cloud infrastructure..."
+              required
+            ></textarea>
+          </div>
+
+          <!-- Character Warning Alert -->
+          <div id="char-warning" class="warning-banner hidden" role="status">
+            ⚠️ Tip: For fastest performance and sharpest alignment, paste key experience bullets and target role requirements (under 6,000 chars).
+          </div>
+
+          <!-- Submit CTA -->
+          <div class="action-bar">
+            <button id="submit-btn" type="submit" class="btn btn-primary btn-large">
+              <span class="btn-text">Tailor Bullets ⚡</span>
+              <span class="kbd-hint">⌘ + Enter</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Right Column: Tailored Output Inspector -->
+      <section class="pane output-pane" aria-label="Tailored Output Inspector">
+        <!-- Results Header Bar -->
+        <div class="results-header">
+          <div class="results-meta">
+            <h2 class="results-title">Tailored Output</h2>
+            <span id="role-tag" class="role-badge hidden">Role Detected</span>
+            <span id="count-badge" class="count-badge hidden">0 Bullets</span>
+          </div>
+          <button id="copy-all-btn" type="button" class="btn btn-secondary hidden" title="Copy all tailored bullets to clipboard">
+            📋 Copy All
+          </button>
+        </div>
+
+        <!-- Inline Error Banner -->
+        <div id="error-banner" class="error-banner hidden" role="alert">
+          <span class="error-icon">⚠️</span>
+          <span id="error-message" class="error-text">Failed to generate bullets.</span>
+          <button id="retry-btn" type="button" class="btn btn-sm btn-ghost">Retry</button>
+        </div>
+
+        <!-- Output Container with Dynamic States -->
+        <div id="output-container" class="output-container">
+          <!-- State 1: Default / Empty Placeholder -->
+          <div id="empty-state" class="state-card empty-state">
+            <div class="empty-icon">🎯</div>
+            <h3 class="empty-title">Ready to Tailor</h3>
+            <p class="empty-desc">
+              Paste your resume bullets and target job description on the left, then click <strong>Tailor Bullets</strong>. Your tailored, quantified achievements will appear here in seconds.
+            </p>
+            <div class="empty-tips">
+              <div class="tip-item">✓ Aligned to target keywords</div>
+              <div class="tip-item">✓ Quantified Google XYZ format</div>
+              <div class="tip-item">✓ One-click clipboard copy</div>
+            </div>
+          </div>
+
+          <!-- State 2: Loading Skeletons -->
+          <div id="loading-state" class="loading-state hidden" aria-live="polite">
+            <div class="loading-indicator">
+              <span class="spinner"></span>
+              <span class="loading-text">Tailoring bullets with Gemini...</span>
+            </div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+            <div class="skeleton-card"></div>
+          </div>
+
+          <!-- State 3: Hydrated Bullets List -->
+          <div id="bullets-list" class="bullets-list hidden" role="region" aria-live="polite">
+            <!-- Dynamic bullet cards injected by app.js -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Global Floating Toast Notification -->
+    <div id="toast" class="toast hidden" role="status" aria-live="polite">
+      Copied to clipboard!
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
